@@ -113,6 +113,14 @@ class SPIDevice
 {
 public:
    virtual void
+   start(
+      const SPIConfig& config
+   ) = 0;
+
+   virtual void
+   stop() = 0;
+
+   virtual void
    select() = 0;
 
    virtual void
@@ -162,6 +170,20 @@ public:
    using CS  = _CS;
 
    inline void
+   start(
+      const SPIConfig& config
+   )
+   {
+      ::spiStart(SPI::driver, &config);
+   }
+
+   inline void
+   stop()
+   {
+      ::spiStop(SPI::driver);
+   }
+
+   inline void
    select()
    {
       _cs.clear();
@@ -181,7 +203,7 @@ public:
       ::spiAcquireBus(SPI::driver);
 
       if (start) {
-         ::spiStart(SPI::driver, SPI::driver->config);
+         //   ::spiStart(SPI::driver, SPI::driver->config);
       }
    }
 
@@ -191,7 +213,7 @@ public:
    )
    {
       if (stop) {
-         ::spiStop(SPI::driver);
+         //    ::spiStop(SPI::driver);
       }
 
       ::spiReleaseBus(SPI::driver);
@@ -234,7 +256,8 @@ public:
    }
 
 private:
-   CS _cs;
+   static CS _cs;
+   static SPIMaster<SPI> _master;
 };
 
 // --- Aliases -----------------------------------------------------------------
