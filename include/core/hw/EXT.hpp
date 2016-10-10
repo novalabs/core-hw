@@ -23,20 +23,65 @@ struct EXTDriverTraits<1> {
    static constexpr auto driver = &EXTD1;
 };
 
+template <class _EXT>
+class EXT_
+{
+public:
+   using EXT = _EXT;
+
+public:
+   static void
+   start(
+      const EXTConfig& config
+   )
+   {
+      ::extStart(EXT::driver, &config);
+   }
+
+   static void
+   stop()
+   {
+      ::extStop(EXT::driver);
+   }
+};
+
+/*! \brief EXT
+ *
+ */
 class EXTChannel
 {
 public:
+   /*! \brief Callback
+    *
+    */
+   using Callback = std::function<void(uint32_t)>;
+
+   /*! \brief Enable the channel
+    *
+    */
    virtual void
    enable() = 0;
 
+
+   /*! \brief Disable the channel
+    *
+    */
    virtual void
    disable() = 0;
 
+
+   /*! \brief Set the channel callback
+    *
+    */
    virtual void
    setCallback(
-      std::function<void(uint32_t)>callback
+      Callback callback //!< callback function
    ) = 0;
 
+
+   /*! \brief Reset the callback for the channel
+    *
+    */
    virtual void
    resetCallback() = 0;
 };
@@ -49,7 +94,7 @@ public:
    using EXT = _EXT;
 
 public:
-   static std::function<void(uint32_t)> callback_impl;
+   static Callback callback_impl;
 
 public:
    inline void
@@ -66,7 +111,7 @@ public:
 
    inline void
    setCallback(
-      std::function<void(uint32_t)>callback
+      Callback callback
    )
    {
       callback_impl = callback;
@@ -102,7 +147,7 @@ private:
 };
 
 template <class _EXT, std::size_t _CH, uint32_t _MODE>
-std::function<void(uint32_t)>EXTChannel_<_EXT, _CH, _MODE>::callback_impl;
+EXTChannel::Callback EXTChannel_<_EXT, _CH, _MODE>::callback_impl;
 
 // --- Aliases -----------------------------------------------------------------
 

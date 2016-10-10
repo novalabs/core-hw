@@ -6,6 +6,10 @@
 
 #pragma once
 
+/*! \namespace core::hw
+ * \brief Core HW abstraction
+ */
+
 #define NAMESPACE_CORE_HW core::hw
 #define NAMESPACE_CORE_HW_BEGIN \
    namespace core { \
