@@ -21,243 +21,292 @@ struct SPIDriverTraits {};
 #if STM32_SPI_USE_SPI1
 template <>
 struct SPIDriverTraits<1> {
-   static constexpr auto driver = &SPID1;
+    static constexpr auto driver = &SPID1;
 };
 #endif
 
 #if STM32_SPI_USE_SPI2
 template <>
 struct SPIDriverTraits<2> {
-   static constexpr auto driver = &SPID2;
+    static constexpr auto driver = &SPID2;
 };
 #endif
 
 #if STM32_SPI_USE_SPI3
 template <>
 struct SPIDriverTraits<3> {
-   static constexpr auto driver = &SPID3;
+    static constexpr auto driver = &SPID3;
 };
 #endif
 
-template <class _SPI>
 class SPIMaster
 {
 public:
-   using SPI = _SPI;
-   inline static void
-   start(
-      const SPIConfig& config
-   )
-   {
-      ::spiStart(SPI::driver, &config);
-   }
+    virtual void
+    start(
+        const SPIConfig& config
+    ) = 0;
 
-   inline static void
-   stop(
-      const SPIConfig& config
-   )
-   {
-      ::spiStart(SPI::driver, &config);
-   }
+    virtual void
+    stop() = 0;
 
-   inline static void
-   acquireBus()
-   {
-      ::spiAcquireBus(SPI::driver);
-   }
+    virtual void
+    acquireBus() = 0;
 
-   inline static void
-   releaseBus()
-   {
-      ::spiReleaseBus(SPI::driver);
-   }
+    virtual void
+    releaseBus() = 0;
 
-   inline static void
-   ignore(
-      size_t n
-   )
-   {
-      ::spiIgnore(SPI::driver, n);
-   }
+    virtual void
+    ignore(
+        size_t n
+    ) = 0;
 
-   inline static void
-   exchange(
-      size_t      n,
-      const void* txbuf,
-      void*       rxbuf
-   )
-   {
-      ::spiExchange(SPI::driver, n, txbuf, rxbuf);
-   }
+    virtual void
+    exchange(
+        size_t      n,
+        const void* txbuf,
+        void*       rxbuf
+    ) = 0;
 
-   inline static void
-   send(
-      size_t      n,
-      const void* txbuf
-   )
-   {
-      ::spiSend(SPI::driver, n, txbuf);
-   }
+    virtual void
+    send(
+        size_t      n,
+        const void* txbuf
+    ) = 0;
 
-   inline static void
-   receive(
-      size_t n,
-      void*  rxbuf
-   )
-   {
-      ::spiReceive(SPI::driver, n, rxbuf);
-   }
+    virtual void
+    receive(
+        size_t n,
+        void*  rxbuf
+    ) = 0;
+};
+
+template <class _SPI>
+class SPIMaster_:
+    public SPIMaster
+{
+public:
+    using SPI = _SPI;
+    inline void
+    start(
+        const SPIConfig& config
+    )
+    {
+        ::spiStart(SPI::driver, &config);
+    }
+
+    inline void
+    stop()
+    {
+        ::spiStop(SPI::driver);
+    }
+
+    inline void
+    acquireBus()
+    {
+#if SPI_USE_MUTUAL_EXCLUSION
+        ::spiAcquireBus(SPI::driver);
+#endif
+    }
+
+    inline void
+    releaseBus()
+    {
+#if SPI_USE_MUTUAL_EXCLUSION
+        ::spiReleaseBus(SPI::driver);
+#endif
+    }
+
+    inline void
+    ignore(
+        size_t n
+    )
+    {
+        ::spiIgnore(SPI::driver, n);
+    }
+
+    inline void
+    exchange(
+        size_t      n,
+        const void* txbuf,
+        void*       rxbuf
+    )
+    {
+        ::spiExchange(SPI::driver, n, txbuf, rxbuf);
+    }
+
+    inline void
+    send(
+        size_t      n,
+        const void* txbuf
+    )
+    {
+        ::spiSend(SPI::driver, n, txbuf);
+    }
+
+    inline void
+    receive(
+        size_t n,
+        void*  rxbuf
+    )
+    {
+        ::spiReceive(SPI::driver, n, rxbuf);
+    }
 };
 
 class SPIDevice
 {
 public:
-   virtual void
-   start(
-      const SPIConfig& config
-   ) = 0;
+    virtual void
+    start(
+        const SPIConfig& config
+    ) = 0;
 
-   virtual void
-   stop() = 0;
+    virtual void
+    stop() = 0;
 
-   virtual void
-   select() = 0;
+    virtual void
+    select() = 0;
 
-   virtual void
-   deselect() = 0;
+    virtual void
+    deselect() = 0;
 
-   virtual void
-   acquireBus(
-      bool start = true
-   ) = 0;
+    virtual void
+    acquireBus(
+        bool start = true
+    ) = 0;
 
-   virtual void
-   releaseBus(
-      bool stop = true
-   ) = 0;
+    virtual void
+    releaseBus(
+        bool stop = true
+    ) = 0;
 
-   virtual void
-   ignore(
-      size_t n
-   ) = 0;
+    virtual void
+    ignore(
+        size_t n
+    ) = 0;
 
-   virtual void
-   exchange(
-      size_t      n,
-      const void* txbuf,
-      void*       rxbuf
-   ) = 0;
+    virtual void
+    exchange(
+        size_t      n,
+        const void* txbuf,
+        void*       rxbuf
+    ) = 0;
 
-   virtual void
-   send(
-      size_t      n,
-      const void* txbuf
-   ) = 0;
+    virtual void
+    send(
+        size_t      n,
+        const void* txbuf
+    ) = 0;
 
-   virtual void
-   receive(
-      size_t n,
-      void*  rxbuf
-   ) = 0;
+    virtual void
+    receive(
+        size_t n,
+        void*  rxbuf
+    ) = 0;
 };
 
 template <class _SPI, class _CS>
 class SPIDevice_:
-   public SPIDevice
+    public SPIDevice
 {
 public:
-   using SPI = _SPI;
-   using CS  = _CS;
+    using SPI = _SPI;
+    using CS  = _CS;
 
-   inline void
-   start(
-      const SPIConfig& config
-   )
-   {
-      ::spiStart(SPI::driver, &config);
-   }
+    inline void
+    start(
+        const SPIConfig& config
+    )
+    {
+        ::spiStart(SPI::driver, &config);
+    }
 
-   inline void
-   stop()
-   {
-      ::spiStop(SPI::driver);
-   }
+    inline void
+    stop()
+    {
+        ::spiStop(SPI::driver);
+    }
 
-   inline void
-   select()
-   {
-      _cs.clear();
-   }
+    inline void
+    select()
+    {
+        _cs.clear();
+    }
 
-   inline void
-   deselect()
-   {
-      _cs.set();
-   }
+    inline void
+    deselect()
+    {
+        _cs.set();
+    }
 
-   inline void
-   acquireBus(
-      bool start = true
-   )
-   {
-      ::spiAcquireBus(SPI::driver);
+    inline void
+    acquireBus(
+        bool start = true
+    )
+    {
+#if SPI_USE_MUTUAL_EXCLUSION
+        ::spiAcquireBus(SPI::driver);
+#endif
 
-      if (start) {
-         //   ::spiStart(SPI::driver, SPI::driver->config);
-      }
-   }
+        if (start) {
+            //   ::spiStart(SPI::driver, SPI::driver->config);
+        }
+    }
 
-   inline void
-   releaseBus(
-      bool stop = true
-   )
-   {
-      if (stop) {
-         //    ::spiStop(SPI::driver);
-      }
+    inline void
+    releaseBus(
+        bool stop = true
+    )
+    {
+        if (stop) {
+            //    ::spiStop(SPI::driver);
+        }
 
-      ::spiReleaseBus(SPI::driver);
-   }
+#if SPI_USE_MUTUAL_EXCLUSION
+        ::spiReleaseBus(SPI::driver);
+#endif
+    }
 
-   inline void
-   ignore(
-      size_t n
-   )
-   {
-      ::spiIgnore(SPI::driver, n);
-   }
+    inline void
+    ignore(
+        size_t n
+    )
+    {
+        ::spiIgnore(SPI::driver, n);
+    }
 
-   inline void
-   exchange(
-      size_t      n,
-      const void* txbuf,
-      void*       rxbuf
-   )
-   {
-      ::spiExchange(SPI::driver, n, txbuf, rxbuf);
-   }
+    inline void
+    exchange(
+        size_t      n,
+        const void* txbuf,
+        void*       rxbuf
+    )
+    {
+        ::spiExchange(SPI::driver, n, txbuf, rxbuf);
+    }
 
-   inline void
-   send(
-      size_t      n,
-      const void* txbuf
-   )
-   {
-      ::spiSend(SPI::driver, n, txbuf);
-   }
+    inline void
+    send(
+        size_t      n,
+        const void* txbuf
+    )
+    {
+        ::spiSend(SPI::driver, n, txbuf);
+    }
 
-   inline void
-   receive(
-      size_t n,
-      void*  rxbuf
-   )
-   {
-      ::spiReceive(SPI::driver, n, rxbuf);
-   }
+    inline void
+    receive(
+        size_t n,
+        void*  rxbuf
+    )
+    {
+        ::spiReceive(SPI::driver, n, rxbuf);
+    }
 
 private:
-   static CS _cs;
-   static SPIMaster<SPI> _master;
+    static CS _cs;
+    static SPIMaster_<SPI> _master;
 };
 
 // --- Aliases -----------------------------------------------------------------
