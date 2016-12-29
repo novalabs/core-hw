@@ -12,6 +12,8 @@
 
 #include <core/hw/GPIO.hpp>
 
+#include <core/os/Time.hpp>
+
 #include "hal.h"
 
 NAMESPACE_CORE_HW_BEGIN
