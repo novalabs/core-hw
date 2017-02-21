@@ -1,4 +1,4 @@
-/* COPYRIGHT (c) 2016 Nova Labs SRL
+/* COPYRIGHT (c) 2016-2017 Nova Labs SRL
  *
  * All rights reserved. All use of this software and documentation is
  * subject to the License Agreement located in the file LICENSE.
@@ -22,89 +22,89 @@ struct QEIDriverTraits {};
 #if STM32_QEI_USE_TIM2
 template <>
 struct QEIDriverTraits<2> {
-   static constexpr auto driver = &QEID2;
+    static constexpr auto driver = &QEID2;
 };
 #endif
 
 #if STM32_QEI_USE_TIM4
 template <>
 struct QEIDriverTraits<4> {
-   static constexpr auto driver = &QEID4;
+    static constexpr auto driver = &QEID4;
 };
 #endif
 
 class QEI
 {
 public:
-   using CountDataType = qeicnt_t;
-   using DeltaDataType = qeidelta_t;
+    using CountDataType = qeicnt_t;
+    using DeltaDataType = qeidelta_t;
 
-   virtual void
-   start(
-      const QEIConfig* config
-   ) = 0;
+    virtual void
+    start(
+        const QEIConfig* config
+    ) = 0;
 
-   virtual void
-   stop() = 0;
+    virtual void
+    stop() = 0;
 
-   virtual void
-   enable() = 0;
+    virtual void
+    enable() = 0;
 
-   virtual void
-   disable() = 0;
+    virtual void
+    disable() = 0;
 
-   virtual CountDataType
-   getCount() = 0;
+    virtual CountDataType
+    getCount() = 0;
 
-   virtual DeltaDataType
-   getDelta() = 0;
+    virtual DeltaDataType
+    getDelta() = 0;
 };
 
 template <class _QEI>
 class QEI_:
-   public QEI
+    public QEI
 {
 public:
-   using QEI = _QEI;
+    using QEI = _QEI;
 
 public:
-   inline void
-   enable()
-   {
-      ::qeiEnable(QEI::driver);
-   }
+    inline void
+    enable()
+    {
+        ::qeiEnable(QEI::driver);
+    }
 
-   inline void
-   disable()
-   {
-      ::qeiDisable(QEI::driver);
-   }
+    inline void
+    disable()
+    {
+        ::qeiDisable(QEI::driver);
+    }
 
-   inline void
-   start(
-      const QEIConfig* config
-   )
-   {
-      ::qeiStart(QEI::driver, config);
-   }
+    inline void
+    start(
+        const QEIConfig* config
+    )
+    {
+        ::qeiStart(QEI::driver, config);
+    }
 
-   inline void
-   stop()
-   {
-      ::qeiStop(QEI::driver);
-   }
+    inline void
+    stop()
+    {
+        ::qeiStop(QEI::driver);
+    }
 
-   CountDataType
-   getCount()
-   {
-      return ::qeiGetCount(QEI::driver);
-   }
+    CountDataType
+    getCount()
+    {
+        return ::qeiGetCount(QEI::driver);
+    }
 
-   DeltaDataType
-   getDelta()
-   {
-      return ::qeiUpdate(QEI::driver);
-   }
+    DeltaDataType
+    getDelta()
+    {
+        return ::qeiUpdate(QEI::driver);
+    }
 };
 
 // --- Aliases -----------------------------------------------------------------

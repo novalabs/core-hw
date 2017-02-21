@@ -1,4 +1,4 @@
-/* COPYRIGHT (c) 2016 Nova Labs SRL
+/* COPYRIGHT (c) 2016-2017 Nova Labs SRL
  *
  * All rights reserved. All use of this software and documentation is
  * subject to the License Agreement located in the file LICENSE.
@@ -19,7 +19,7 @@ struct SDUDriverTraits {};
 #if HAL_USE_SERIAL_USB
 template <>
 struct SDUDriverTraits<1> {
-   static constexpr auto driver = &SDU1;
+    static constexpr auto driver = &SDU1;
 };
 #endif
 

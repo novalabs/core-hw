@@ -1,4 +1,4 @@
-/* COPYRIGHT (c) 2016 Nova Labs SRL
+/* COPYRIGHT (c) 2016-2017 Nova Labs SRL
  *
  * All rights reserved. All use of this software and documentation is
  * subject to the License Agreement located in the file LICENSE.
@@ -19,35 +19,35 @@ struct SDDriverTraits {};
 #if STM32_SERIAL_USE_USART1
 template <>
 struct SDDriverTraits<1> {
-   static constexpr auto driver = &SD1;
+    static constexpr auto driver = &SD1;
 };
 #endif
 
 #if STM32_SERIAL_USE_USART2
 template <>
 struct SDDriverTraits<2> {
-   static constexpr auto driver = &SD2;
+    static constexpr auto driver = &SD2;
 };
 #endif
 
 #if STM32_SERIAL_USE_USART3
 template <>
 struct SDDriverTraits<3> {
-   static constexpr auto driver = &SD3;
+    static constexpr auto driver = &SD3;
 };
 #endif
 
 #if STM32_SERIAL_USE_USART4
 template <>
 struct SDDriverTraits<4> {
-   static constexpr auto driver = &SD4;
+    static constexpr auto driver = &SD4;
 };
 #endif
 
 #if STM32_SERIAL_USE_USART5
 template <>
 struct SDDriverTraits<5> {
-   static constexpr auto driver = &SD5;
+    static constexpr auto driver = &SD5;
 };
 #endif
 
