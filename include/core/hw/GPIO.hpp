@@ -161,33 +161,32 @@ struct Pad_:
     }
 };
 
-template<bool DEFAULT_VALUE>
+template <bool DEFAULT_VALUE>
 struct NCPad:
-		public Pad {
-	NCPad() {
-		_value = DEFAULT_VALUE;
-	}
+    public Pad {
+    NCPad()
+    {
+        _value = DEFAULT_VALUE;
+    }
+
     inline void
     set()
-    {
-    }
+    {}
 
     inline void
     clear()
-    {
-    }
+    {}
 
     inline void
     toggle()
-    {
-    }
+    {}
 
     inline void
     write(
         bool high
     )
     {
-    	_value = high;
+        _value = high;
     }
 
     inline bool
@@ -200,11 +199,12 @@ struct NCPad:
     setMode(
         Mode mode
     )
-    {
-    }
+    {}
+
 private:
     bool _value;
 };
+
 // --- Aliases -----------------------------------------------------------------
 
 using GPIO_A = GPIODriverTraits<0>;
