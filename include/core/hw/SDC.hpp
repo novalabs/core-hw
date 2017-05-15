@@ -102,15 +102,21 @@ public:
     {
         event_listener_t el0, el1;
 
+        chEvtObjectInit(&_inserted_event);
+        chEvtObjectInit(&_removed_event);
+
         static const evhandler_t evhndl[] = {
             _insertHandler,
             _removeHandler
         };
 
-        tmr_init();
-
         chEvtRegister(&_inserted_event, &el0, 0);
         chEvtRegister(&_removed_event, &el1, 1);
+
+        chSysLock();
+        _cnt = 0;
+        chVTSetI(&tmr, MS2ST(POLLING_DELAY), tmrfunc, nullptr);
+        chSysUnlock();
 
         while (!chThdShouldTerminateX()) {
             chEvtDispatch(evhndl, chEvtWaitOneTimeout(ALL_EVENTS, TIME_INFINITE));
@@ -164,17 +170,6 @@ private:
         chVTSetI(&tmr, MS2ST(POLLING_DELAY), tmrfunc, nullptr);
         chSysUnlockFromISR();
     } // tmrfunc
-
-    static void
-    tmr_init()
-    {
-        chEvtObjectInit(&_inserted_event);
-        chEvtObjectInit(&_removed_event);
-        chSysLock();
-        _cnt = 0;
-        chVTSetI(&tmr, MS2ST(POLLING_DELAY), tmrfunc, nullptr);
-        chSysUnlock();
-    }
 
     static void
     _insertHandler(
