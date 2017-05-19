@@ -12,7 +12,7 @@
 #include <core/hw/GPIO.hpp>
 
 #include "hal.h"
-#include "qei.h"
+#include <core/stm32_qei/qei.h>
 
 NAMESPACE_CORE_HW_BEGIN
 
@@ -41,7 +41,7 @@ public:
 
     virtual void
     start(
-        const QEIConfig* config
+        const QEIConfig& config
     ) = 0;
 
     virtual void
@@ -82,10 +82,10 @@ public:
 
     inline void
     start(
-        const QEIConfig* config
+        const QEIConfig& config
     )
     {
-        ::qeiStart(QEI::driver, config);
+        ::qeiStart(QEI::driver, &config);
     }
 
     inline void
