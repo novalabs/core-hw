@@ -57,7 +57,7 @@ class PWMMaster
 public:
     virtual void
     start(
-        const PWMConfig* config
+        const PWMConfig& config
     ) = 0;
 
     virtual void
@@ -98,6 +98,7 @@ class PWMMaster_:
     public
     PWMMaster
 {
+public:
     using PWM = _PWM;
     using CountDataType = pwmcnt_t;
 
@@ -106,10 +107,10 @@ public:
 
     inline void
     start(
-        const PWMConfig* config
+        const PWMConfig& config
     )
     {
-        ::pwmStart(PWM::driver, config);
+        ::pwmStart(PWM::driver, &config);
     }
 
     inline void
@@ -128,7 +129,7 @@ public:
 
         if (PWM::driver->state == PWM_READY) {
             stop();
-            start(PWM::driver->config);
+            ::pwmStart(PWM::driver, PWM::driver->config);
         }
     }
 
@@ -152,7 +153,7 @@ public:
         return PWM::driver->config->period;
     }
 
-    inline void
+    inline  void
     setCallback(
         std::function<void()>callback
     )
