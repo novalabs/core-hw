@@ -23,14 +23,26 @@ struct EXTDriverTraits<1> {
     static constexpr auto driver = &EXTD1;
 };
 
+class EXTController
+{
+public:
+    virtual void
+    start(
+        const EXTConfig& config
+    ) = 0;
+
+    virtual void
+    stop() = 0;
+};
+
 template <class _EXT>
-class EXT_
+class EXTController_ : public EXTController
 {
 public:
     using EXT = _EXT;
 
 public:
-    static void
+    inline void
     start(
         const EXTConfig& config
     )
@@ -38,7 +50,7 @@ public:
         ::extStart(EXT::driver, &config);
     }
 
-    static void
+    inline void
     stop()
     {
         ::extStop(EXT::driver);
@@ -56,11 +68,31 @@ public:
      */
     using Callback = std::function<void(uint32_t)>;
 
+    /*! \brief Interrupt edge selection
+     *
+     */
+    enum class Edge {
+        NONE, //!< Disable the interrupt
+        RISING, //!< Rising edge
+        FALLING, //!< Falling edge
+        BOTH //!< Both edges
+    };
+
     /*! \brief Enable the channel
      *
      */
     virtual void
     enable() = 0;
+
+
+    /*! \brief Enable the channel
+     *
+     * It specifies the edge it must be sensitive to
+     */
+    virtual void
+    enable(
+        Edge edge
+    ) = 0;
 
 
     /*! \brief Disable the channel
@@ -90,6 +122,8 @@ template <class _EXT, std::size_t _CH, uint32_t _MODE>
 class EXTChannel_:
     public EXTChannel
 {
+    static_assert(_CH < EXT_MAX_CHANNELS, "Channel does not exist");
+
 public:
     using EXT = _EXT;
 
@@ -102,6 +136,33 @@ public:
     {
         ::extChannelEnable(EXT::driver, _CH);
     }
+
+    inline void
+    enable(
+        Edge edge
+    )
+    {
+        EXTChannelConfig tmp = EXT::driver->config->channels[_CH];
+
+        tmp.mode = _MODE & ~EXT_CH_MODE_EDGES_MASK;
+
+        switch (edge) {
+          case Edge::RISING:
+              tmp.mode &= EXT_CH_MODE_RISING_EDGE;
+              break;
+          case Edge::FALLING:
+              tmp.mode &= EXT_CH_MODE_FALLING_EDGE;
+              break;
+          case Edge::BOTH:
+              tmp.mode &= EXT_CH_MODE_BOTH_EDGES;
+              break;
+          default:
+              tmp.mode &= EXT_CH_MODE_DISABLED;
+              break;
+        }
+
+        extSetChannelMode(EXT::driver, _CH, &tmp);
+    } // enable
 
     inline void
     disable()
