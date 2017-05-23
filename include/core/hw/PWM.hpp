@@ -153,7 +153,7 @@ public:
         return PWM::driver->config->period;
     }
 
-    inline  void
+    inline void
     setCallback(
         std::function<void()>callback
     )
