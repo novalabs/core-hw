@@ -59,7 +59,23 @@ struct Pad {
         INPUT_PULLDOWN   = PAL_MODE_INPUT_PULLDOWN, //!< Digital input with pull down
         INPUT_ANALOG     = PAL_MODE_INPUT_ANALOG, //!< Analog input
         OUTPUT_PUSHPULL  = PAL_MODE_OUTPUT_PUSHPULL, //!< Digital push-pull output
-        OUTPUT_OPENDRAIN = PAL_MODE_OUTPUT_OPENDRAIN //!< Digital open-drain output
+        OUTPUT_OPENDRAIN = PAL_MODE_OUTPUT_OPENDRAIN, //!< Digital open-drain output
+        ALTERNATE_0      = PAL_MODE_ALTERNATE(0),
+        ALTERNATE_1      = PAL_MODE_ALTERNATE(1),
+        ALTERNATE_2      = PAL_MODE_ALTERNATE(2),
+        ALTERNATE_3      = PAL_MODE_ALTERNATE(3),
+        ALTERNATE_4      = PAL_MODE_ALTERNATE(4),
+        ALTERNATE_5      = PAL_MODE_ALTERNATE(5),
+        ALTERNATE_6      = PAL_MODE_ALTERNATE(6),
+        ALTERNATE_7      = PAL_MODE_ALTERNATE(7),
+        ALTERNATE_8      = PAL_MODE_ALTERNATE(8),
+        ALTERNATE_9      = PAL_MODE_ALTERNATE(9),
+        ALTERNATE_10     = PAL_MODE_ALTERNATE(10),
+        ALTERNATE_11     = PAL_MODE_ALTERNATE(11),
+        ALTERNATE_12     = PAL_MODE_ALTERNATE(12),
+        ALTERNATE_13     = PAL_MODE_ALTERNATE(13),
+        ALTERNATE_14     = PAL_MODE_ALTERNATE(14),
+        ALTERNATE_15     = PAL_MODE_ALTERNATE(15)
     };
 
     /*! \brief Set the pad
