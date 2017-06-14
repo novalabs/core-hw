@@ -55,9 +55,12 @@ struct PWMDriverTraits<5> {
 class PWMMaster
 {
 public:
+    using Configuration = ::PWMConfig;
+
+public:
     virtual void
     start(
-        const PWMConfig& config
+        const Configuration& config
     ) = 0;
 
     virtual void
@@ -89,9 +92,6 @@ public:
     resetCallback() = 0;
 };
 
-/// TODO: CENTER ALIGNED
-/// TODO: ADC DUAL
-
 
 template <class _PWM>
 class PWMMaster_:
@@ -107,7 +107,7 @@ public:
 
     inline void
     start(
-        const PWMConfig& config
+        const Configuration& config
     )
     {
         ::pwmStart(PWM::driver, &config);
@@ -116,7 +116,6 @@ public:
     inline void
     stop()
     {
-        //PWM::driver->tim->CR1 |= STM32_TIM_CR1_CMS(2); // TODO: Mettere al posto giusto
         ::pwmStop(PWM::driver);
     }
 
@@ -125,7 +124,7 @@ public:
         uint32_t frequency
     )
     {
-        const_cast<PWMConfig*>(PWM::driver->config)->frequency = frequency;
+        const_cast<Configuration*>(PWM::driver->config)->frequency = frequency;
 
         if (PWM::driver->state == PWM_READY) {
             stop();
@@ -198,6 +197,11 @@ public:
     set(
         CountDataType value
     ) = 0;
+
+    virtual bool
+    setI(
+        CountDataType value
+    ) = 0;
 };
 
 template <class _PWM, std::size_t _CHANNEL>
@@ -207,9 +211,6 @@ class PWMChannel_:
 public:
     using PWM = _PWM;
     const int CHANNEL = _CHANNEL;
-
-public:
-    static std::function<void()> callback_impl;
 
 public:
     inline void
@@ -230,6 +231,15 @@ public:
     )
     {
         ::pwmEnableChannel(PWM::driver, CHANNEL, value);
+        return true;
+    }
+
+    inline bool
+    setI(
+        CountDataType value
+    )
+    {
+        pwmEnableChannelI(PWM::driver, CHANNEL, value);
         return true;
     }
 };
