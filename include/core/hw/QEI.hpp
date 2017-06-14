@@ -36,12 +36,14 @@ struct QEIDriverTraits<4> {
 class QEI
 {
 public:
+    using Configuration = QEIConfig;
     using CountDataType = qeicnt_t;
     using DeltaDataType = qeidelta_t;
 
+public:
     virtual void
     start(
-        const QEIConfig& config
+        const Configuration& config
     ) = 0;
 
     virtual void
@@ -82,7 +84,7 @@ public:
 
     inline void
     start(
-        const QEIConfig& config
+        const Configuration& config
     )
     {
         ::qeiStart(QEI::driver, &config);
