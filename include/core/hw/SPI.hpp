@@ -41,10 +41,12 @@ struct SPIDriverTraits<3> {
 
 class SPIMaster
 {
+    public:
+        using Configuration = ::SPIConfig;
 public:
     virtual void
     start(
-        const SPIConfig& config
+        const Configuration& config
     ) = 0;
 
     virtual void
@@ -89,7 +91,7 @@ public:
     using SPI = _SPI;
     inline void
     start(
-        const SPIConfig& config
+        const Configuration& config
     )
     {
         ::spiStart(SPI::driver, &config);
@@ -156,10 +158,13 @@ public:
 
 class SPIDevice
 {
+    public:
+        using Configuration = ::SPIConfig;
+
 public:
     virtual void
     start(
-        const SPIConfig& config
+        const Configuration& config
     ) = 0;
 
     virtual void
@@ -216,7 +221,7 @@ public:
 
     inline void
     start(
-        const SPIConfig& config
+        const Configuration& config
     )
     {
         ::spiStart(SPI::driver, &config);

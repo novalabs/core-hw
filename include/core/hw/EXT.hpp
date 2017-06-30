@@ -36,7 +36,8 @@ public:
 };
 
 template <class _EXT>
-class EXTController_ : public EXTController
+class EXTController_:
+    public EXTController
 {
 public:
     using EXT = _EXT;

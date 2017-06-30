@@ -121,7 +121,7 @@ public:
         while (!chThdShouldTerminateX()) {
             chEvtDispatch(evhndl, chEvtWaitOneTimeout(ALL_EVENTS, TIME_INFINITE));
         }
-    }
+    } // polling
 
 private:
     static virtual_timer_t tmr;
@@ -140,11 +140,13 @@ private:
             if (_cnt == 0) {
                 chEvtBroadcastI(&_inserted_event);
             }
+
             _cnt = 1;
         } else {
             if (_cnt == 1) {
                 chEvtBroadcastI(&_removed_event);
             }
+
             _cnt = 0;
         }
 
@@ -166,7 +168,7 @@ private:
 #endif
         chVTSetI(&tmr, MS2ST(POLLING_DELAY), tmrfunc, nullptr);
         chSysUnlockFromISR();
-    }
+    } // tmrfunc
 
     static void
     _insertHandler(

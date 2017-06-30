@@ -6,11 +6,12 @@
 
 #pragma once
 
-#include "hal.h"
-
 #include <core/hw/namespace.hpp>
 #include <core/hw/common.hpp>
-#include <core/hw/GPIO.hpp>
+
+#include <functional>
+
+#include "hal.h"
 
 NAMESPACE_CORE_HW_BEGIN
 
