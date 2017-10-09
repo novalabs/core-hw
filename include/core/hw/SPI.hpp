@@ -41,8 +41,9 @@ struct SPIDriverTraits<3> {
 
 class SPIMaster
 {
-    public:
-        using Configuration = ::SPIConfig;
+public:
+    using Configuration = ::SPIConfig;
+
 public:
     virtual void
     start(
@@ -158,8 +159,8 @@ public:
 
 class SPIDevice
 {
-    public:
-        using Configuration = ::SPIConfig;
+public:
+    using Configuration = ::SPIConfig;
 
 public:
     virtual void
