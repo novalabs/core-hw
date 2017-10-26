@@ -13,6 +13,12 @@
 
 #include "hal.h"
 
+#ifdef STM32F4XX
+#define UID_BASE (0x1FFF7A10u)
+#else
+#define UID_BASE (0x1FFFF7ACu)
+#endif
+
 extern SerialUSBDriver SDU1;
 
 static constexpr char NIBBLE[] = {
@@ -220,18 +226,18 @@ public:
         static const uint8_t vcom_string3[(2 + 12 * 4)] = {
             USB_DESC_BYTE((2 + 12 * 4)),                       /* bLength.                         */
             USB_DESC_BYTE(USB_DESCRIPTOR_STRING),              /* bDescriptorType.                 */
-            (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7AC)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7AC)) & 0x0F]), 0,
-            (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7AD)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7AD)) & 0x0F]), 0,
-            (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7AE)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7AE)) & 0x0F]), 0,
-            (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7AF)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7AF)) & 0x0F]), 0,
-            (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B0)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B0)) & 0x0F]), 0,
-            (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B1)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B1)) & 0x0F]), 0,
-            (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B2)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B2)) & 0x0F]), 0,
-            (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B3)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B3)) & 0x0F]), 0,
-            (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B4)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B4)) & 0x0F]), 0,
-            (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B5)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B5)) & 0x0F]), 0,
-            (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B6)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B6)) & 0x0F]), 0,
-            (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B7)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(0x1FFFF7B7)) & 0x0F]), 0,
+            (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  0)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  0)) & 0x0F]), 0,
+            (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  1)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  1)) & 0x0F]), 0,
+            (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  2)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  2)) & 0x0F]), 0,
+            (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  3)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  3)) & 0x0F]), 0,
+            (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  4)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  4)) & 0x0F]), 0,
+            (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  5)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  5)) & 0x0F]), 0,
+            (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  6)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  6)) & 0x0F]), 0,
+            (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  7)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  7)) & 0x0F]), 0,
+            (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  8)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  8)) & 0x0F]), 0,
+            (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  9)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE +  9)) & 0x0F]), 0,
+            (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE + 10)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE + 10)) & 0x0F]), 0,
+            (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE + 11)) >> 4]), 0, (uint8_t)(NIBBLE[(*(uint8_t*)(UID_BASE + 11)) & 0x0F]), 0,
         };
 
         /*
