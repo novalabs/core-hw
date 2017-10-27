@@ -89,7 +89,7 @@ public:
         _remove_callback_impl = callback;
     }
 
-    bool
+    inline bool
     isReady()
     {
         return _ready;
@@ -177,6 +177,8 @@ private:
     {
         (void)id;
 
+        _ready = false;
+
         if (sdcConnect(SDC::driver) != HAL_SUCCESS) {
             return;
         }
@@ -187,6 +189,8 @@ private:
             } else {
                 sdcDisconnect(SDC::driver);
             }
+        } else {
+            _ready = true;
         }
     }
 
