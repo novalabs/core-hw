@@ -15,12 +15,12 @@
 
 NAMESPACE_CORE_HW_BEGIN
 
-#ifndef POLLING_INTERVAL
-#define POLLING_INTERVAL 10
+#ifndef SDC_POLLING_INTERVAL
+#define SDC_POLLING_INTERVAL 10
 #endif
 
-#ifndef POLLING_DELAY
-#define POLLING_DELAY    10
+#ifndef SDC_POLLING_DELAY
+#define SDC_POLLING_DELAY    10
 #endif
 
 template <std::size_t S>
@@ -115,7 +115,7 @@ public:
 
         chSysLock();
         _cnt = 0;
-        chVTSetI(&tmr, MS2ST(POLLING_DELAY), tmrfunc, nullptr);
+        chVTSetI(&tmr, MS2ST(SDC_POLLING_DELAY), tmrfunc, nullptr);
         chSysUnlock();
 
         while (!chThdShouldTerminateX()) {
@@ -157,16 +157,16 @@ private:
                     chEvtBroadcastI(&_inserted_event);
                 }
             } else {
-                _cnt = POLLING_INTERVAL;
+                _cnt = SDC_POLLING_INTERVAL;
             }
         } else {
             if (!blkIsInserted(SDC::driver)) {
-                _cnt = POLLING_INTERVAL;
+                _cnt = SDC_POLLING_INTERVAL;
                 chEvtBroadcastI(&_removed_event);
             }
         }
 #endif
-        chVTSetI(&tmr, MS2ST(POLLING_DELAY), tmrfunc, nullptr);
+        chVTSetI(&tmr, MS2ST(SDC_POLLING_DELAY), tmrfunc, nullptr);
         chSysUnlockFromISR();
     } // tmrfunc
 
