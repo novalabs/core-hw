@@ -42,6 +42,16 @@ public:
     );
 
     static void
+    get(
+        uint64_t* nanoseconds
+    );
+
+    static void
+    get(
+        uint64_t& nanoseconds
+    );
+
+    static void
     set(
         const std::timespec* time
     );

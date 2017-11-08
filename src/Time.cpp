@@ -52,19 +52,6 @@ PTPTime::get(
 }
 
 void
-PTPTime::set(
-    const std::timespec* time
-)
-{
-    struct ptptime_t ts;
-
-    ts.tv_sec  = time->tv_sec;
-    ts.tv_nsec = time->tv_nsec;
-
-    macPTPSetTime(&ts);
-}
-
-void
 PTPTime::get(
     std::timespec& time
 )
@@ -75,6 +62,43 @@ PTPTime::get(
 
     time.tv_sec  = timestamp.tv_sec;
     time.tv_nsec = timestamp.tv_nsec;
+}
+
+void
+PTPTime::get(
+    uint64_t* nanoseconds
+)
+{
+    struct ptptime_t timestamp;
+
+    macPTPGetTime(&timestamp);
+
+    *nanoseconds = (((uint64_t)timestamp.tv_sec) * 1000000000) + timestamp.tv_nsec;
+}
+
+void
+PTPTime::get(
+    uint64_t& nanoseconds
+)
+{
+    struct ptptime_t timestamp;
+
+    macPTPGetTime(&timestamp);
+
+    nanoseconds = (((uint64_t)timestamp.tv_sec) * 1000000000) + timestamp.tv_nsec;
+}
+
+void
+PTPTime::set(
+    const std::timespec* time
+)
+{
+    struct ptptime_t ts;
+
+    ts.tv_sec  = time->tv_sec;
+    ts.tv_nsec = time->tv_nsec;
+
+    macPTPSetTime(&ts);
 }
 
 void
