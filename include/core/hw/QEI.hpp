@@ -26,6 +26,13 @@ struct QEIDriverTraits<2> {
 };
 #endif
 
+#if STM32_QEI_USE_TIM3
+template <>
+struct QEIDriverTraits<3> {
+    static constexpr auto driver = &QEID3;
+};
+#endif
+
 #if STM32_QEI_USE_TIM4
 template <>
 struct QEIDriverTraits<4> {
@@ -112,6 +119,7 @@ public:
 // --- Aliases -----------------------------------------------------------------
 
 using QEI_2 = QEIDriverTraits<2>;
+using QEI_3 = QEIDriverTraits<3>;
 using QEI_4 = QEIDriverTraits<4>;
 
 NAMESPACE_CORE_HW_END
