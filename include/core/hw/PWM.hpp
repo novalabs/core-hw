@@ -53,6 +53,13 @@ struct PWMDriverTraits<5> {
 };
 #endif
 
+#if STM32_PWM_USE_TIM15
+template <>
+struct PWMDriverTraits<15> {
+    static constexpr auto driver = &PWMD15;
+};
+#endif
+
 class PWMMaster
 {
 public:
@@ -252,5 +259,6 @@ using PWM_2 = PWMDriverTraits<2>;
 using PWM_3 = PWMDriverTraits<3>;
 using PWM_4 = PWMDriverTraits<4>;
 using PWM_5 = PWMDriverTraits<5>;
+using PWM_15 = PWMDriverTraits<15>;
 
 NAMESPACE_CORE_HW_END
