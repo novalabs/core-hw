@@ -75,7 +75,15 @@ public:
 
     void
     setInsertCallback(
-        Callback callback
+        Callback&& callback
+    )
+    {
+        _insert_callback_impl = std::move(callback);
+    }
+
+    void
+    setInsertCallback(
+    	Callback& callback
     )
     {
         _insert_callback_impl = callback;
@@ -83,7 +91,15 @@ public:
 
     void
     setRemoveCallback(
-        Callback callback
+        Callback&& callback
+    )
+    {
+        _remove_callback_impl = std::move(callback);
+    }
+
+    void
+    setRemoveCallback(
+        Callback& callback
     )
     {
         _remove_callback_impl = callback;
