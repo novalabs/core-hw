@@ -125,6 +125,9 @@ struct Pad {
     setMode(
         Mode mode //!< mode
     ) = 0;
+
+    virtual bool
+	isNC() = 0;
 };
 
 /*! \brief Pad
@@ -175,6 +178,12 @@ struct Pad_:
     {
         palSetPadMode(reinterpret_cast<stm32_gpio_t*>(GPIO::driver), _PAD, mode);
     }
+
+    inline bool
+	isNC()
+    {
+    	return false;
+    }
 };
 
 template <bool DEFAULT_VALUE>
@@ -216,6 +225,12 @@ struct NCPad:
         Mode mode
     )
     {}
+
+    inline bool
+	isNC()
+    {
+    	return true;
+    }
 
 private:
     bool _value;
