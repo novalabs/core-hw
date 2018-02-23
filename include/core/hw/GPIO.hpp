@@ -127,6 +127,18 @@ struct Pad {
         Mode mode //!< mode
     ) = 0;
 
+    /*! \brief Set pad default mode
+     *
+     */
+    virtual void
+    setDefaultMode() = 0;
+
+    /*! \brief Set pad alternate mode
+     *
+     */
+    virtual void
+    setAlternateMode() = 0;
+
     virtual bool
 	isNC() = 0;
 };
@@ -135,11 +147,20 @@ struct Pad {
  *
  * \tparam _GPIO GPIODriverTraits driver
  * \tparam _PAD pad
+ * \tparam _DEFAULT_MODE default mode
+ * \tparam _ALTERNATE_MODE alternate mode
  */
-template <class _GPIO, std::size_t _PAD>
+template <class _GPIO, std::size_t _PAD, Pad::Mode _DEFAULT_MODE = Pad::Mode::RESET, Pad::Mode _ALTERNATE_MODE = Pad::Mode::RESET>
 struct Pad_:
     public Pad {
     using GPIO = _GPIO;
+
+    Pad_() {
+        if(_DEFAULT_MODE != Mode::RESET) {
+            setMode(_DEFAULT_MODE);
+        }
+    }
+
     inline void
     set()
     {
@@ -178,6 +199,18 @@ struct Pad_:
     )
     {
         palSetPadMode(reinterpret_cast<stm32_gpio_t*>(GPIO::driver), _PAD, static_cast<iomode_t>(mode));
+    }
+
+    inline void
+    setDefaultMode()
+    {
+        setMode(_DEFAULT_MODE);
+    }
+
+    inline void
+    setAlternateMode()
+    {
+        setMode(_ALTERNATE_MODE);
     }
 
     inline bool
@@ -225,6 +258,14 @@ struct NCPad:
     setMode(
         Mode mode
     )
+    {}
+
+    inline void
+    setDefaultMode()
+    {}
+
+    inline void
+    setAlternateMode()
     {}
 
     inline bool
