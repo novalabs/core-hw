@@ -161,6 +161,14 @@ struct Pad_:
         }
     }
 
+    Pad_(bool high) {
+        write(high);
+
+        if(_DEFAULT_MODE != Mode::RESET) {
+            setMode(_DEFAULT_MODE);
+        }
+    }
+
     inline void
     set()
     {
