@@ -53,7 +53,8 @@ struct Pad {
     /*! \brief Pad modes
      *
      */
-    enum Mode : iomode_t {
+    enum class Mode : iomode_t {
+        RESET            = PAL_MODE_RESET, //!< Reser state
         INPUT            = PAL_MODE_INPUT, //!< Digital floating input
         INPUT_PULLUP     = PAL_MODE_INPUT_PULLUP, //!< Digital input with pull up
         INPUT_PULLDOWN   = PAL_MODE_INPUT_PULLDOWN, //!< Digital input with pull down
@@ -176,7 +177,7 @@ struct Pad_:
         Mode mode
     )
     {
-        palSetPadMode(reinterpret_cast<stm32_gpio_t*>(GPIO::driver), _PAD, mode);
+        palSetPadMode(reinterpret_cast<stm32_gpio_t*>(GPIO::driver), _PAD, static_cast<iomode_t>(mode));
     }
 
     inline bool
