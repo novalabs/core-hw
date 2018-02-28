@@ -210,6 +210,9 @@ public:
     setI(
         CountDataType value
     ) = 0;
+
+    virtual uint32_t
+    getPeriod() = 0;
 };
 
 template <class _PWM, std::size_t _CHANNEL>
@@ -249,6 +252,12 @@ public:
     {
         pwmEnableChannelI(PWM::driver, CHANNEL, value);
         return true;
+    }
+
+    inline uint32_t
+    getPeriod()
+    {
+        return PWM::driver->config->period;
     }
 };
 
