@@ -61,6 +61,7 @@ struct Pad {
         INPUT_ANALOG     = PAL_MODE_INPUT_ANALOG, //!< Analog input
         OUTPUT_PUSHPULL  = PAL_MODE_OUTPUT_PUSHPULL, //!< Digital push-pull output
         OUTPUT_OPENDRAIN = PAL_MODE_OUTPUT_OPENDRAIN, //!< Digital open-drain output
+        OUTPUT_ANALOG    = PAL_MODE_INPUT_ANALOG, //!< Analog output
         ALTERNATE_0      = PAL_MODE_ALTERNATE(0),
         ALTERNATE_1      = PAL_MODE_ALTERNATE(1),
         ALTERNATE_2      = PAL_MODE_ALTERNATE(2),
