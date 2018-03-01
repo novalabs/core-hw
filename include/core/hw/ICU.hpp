@@ -53,13 +53,6 @@ struct ICUDriverTraits<5> {
 };
 #endif
 
-#if STM32_ICU_USE_TIM14
-template <>
-struct ICUDriverTraits<14> {
-    static constexpr auto driver = &ICUD14;
-};
-#endif
-
 #if STM32_ICU_USE_TIM15
 template <>
 struct ICUDriverTraits<15> {
@@ -198,6 +191,7 @@ public:
 			  break;
 		  case Level::HIGH:
 			  _configuration.mode = ICU_INPUT_ACTIVE_HIGH;
+			  break;
 		  default:
 			  break;
 		}
@@ -337,7 +331,6 @@ using ICU_2 = ICUDriverTraits<2>;
 using ICU_3 = ICUDriverTraits<3>;
 using ICU_4 = ICUDriverTraits<4>;
 using ICU_5 = ICUDriverTraits<5>;
-using ICU_14 = ICUDriverTraits<14>;
 using ICU_15 = ICUDriverTraits<15>;
 
 NAMESPACE_CORE_HW_END
