@@ -98,6 +98,12 @@ public:
 
     virtual void
     resetCallback() = 0;
+
+    virtual void
+	enableCallback() = 0;
+
+    virtual void
+	disableCallback() = 0;
 };
 
 
@@ -176,6 +182,15 @@ public:
         const_cast<PWMConfig*>(PWM::driver->config)->callback = nullptr;
     }
 
+    inline void
+	enableCallback() {
+        ::pwmEnablePeriodicNotification(PWM::driver);
+    }
+
+    inline void
+	disableCallback() {
+        ::pwmDisablePeriodicNotification(PWM::driver);
+    }
 private:
     static inline void
     _callback(
